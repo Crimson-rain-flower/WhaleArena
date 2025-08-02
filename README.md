@@ -87,7 +87,7 @@ WhaleArena/
     npm start
     ```
 
-3. Open [http://localhost:3000](http://localhost:3000) to view in the browser.
+
 
 ---
 
