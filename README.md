@@ -1,106 +1,142 @@
-# Dive into Whale Arena
-This repository contains an advanced CSS theme system built with custom properties, utility
-layers, and enhanced typography. It is designed for projects that require seamless light/dark
-mode support, high-quality text rendering, and a modern, maintainable design
-system—especially when using Tailwind CSS or similar utility frameworks.
+# WhaleArena
+
+**WhaleArena** is a visually stunning, competitive learning platform built to enhance the experience of students participating in webathons and other technology-driven competitions. This project features a custom UI/UX with animated cursors, glowing gradients, smooth transitions, and a personalized dashboard, all designed to make competitive learning more engaging.
+
 ---
+
 ## Features
-### 1. **Light & Dark Theme Support**
-- Uses CSS custom properties for all key colors.
-- Easily switch between themes using the `.dark` class.
-### 2. **Semantic Color Tokens**
-- `@theme inline` maps base variables to semantically meaningful tokens for easier use
-across your codebase.
-### 3. **Typography & Font Smoothing**
-- Enhanced base styles for headings, paragraphs, labels, buttons, and inputs.
-- Utilities like `.text-quality-enhanced`, `.text-crisp`, and `.text-smooth` for fine-tuning text
-rendering.
-### 4. **Gradients & Utilities**
-- Includes utility classes, like `.bg-gradient-radial`, for easily applying radial gradients.
-### 5. **Accessibility & Usability**
-- Improved selection styles for better UX.
-- Smooth scrolling and font size adjustments for accessibility.
+
+- **Custom Animated Cursor**  
+  Unique cursor design with trailing effects, click ripples, and glowing highlights for an immersive experience.
+
+- **Multi-Page SPA Architecture**  
+  Seamless navigation between Login, Loading, Dashboard, Progress, Explore, Profile, Social, and Discover/Creation pages.
+
+- **Student Dashboard**  
+  Personalized dashboard displaying webathon stats, teams, progress, streaks, rank, and more.
+
+- **Modern UI Components**  
+  Stylish cards, buttons, badges, and navigation bars with gradient backgrounds and hover animations.
+
+- **Background Effects**  
+  Floating particles, animated radial gradients, and smooth transitions for a lively background.
+
+- **Responsive Design**  
+  Mobile-friendly layouts with adaptive typography and spacing.
+
+- **Dark Mode Support**  
+  Dynamic theming via CSS custom properties and variants.
+
+- **Intuitive Keyboard Shortcuts**  
+  Quickly switch between pages using `Ctrl`/`Cmd` + number keys.
+
 ---
-## Getting Started
-### 1. **Include the CSS in your project**
-Add the CSS file to your project and make sure it's loaded globally.
-### 2. **Switch Themes**
-To activate dark mode, add the `.dark` class to the root HTML element or body:
-```html
-<body class="dark">
-<!-- Your content -->
-</body>
-```
-### 3. **Using Semantic Tokens**
-Reference variables in your CSS or Tailwind configuration:
-```css
-background: var(--color-background);
-color: var(--color-foreground);
-```
-### 4. **Typography Utilities**
-Apply enhanced text rendering where needed:
-```html
-<h1 class="text-quality-enhanced">Welcome</h1>
-```
-### 5. **Custom Gradients**
-Use radial gradient utilities:
-```html
-<div class="bg-gradient-radial"></div>
-```
+
+## Tech Stack
+
+- **Frontend:**  
+  - HTML, CSS (custom properties, Tailwind, oklch color model)
+  - TypeScript + React (with motion/animation libraries)
+  - Vanilla JS for cursor and animation logic
+
+- **Styling:**  
+  - Custom CSS variables and variants for dark/light mode
+  - TailwindCSS for utility classes and rapid prototyping
+
+- **Animation:**  
+  - Framer Motion (for React TSX version)
+  - Vanilla JS transitions and effects
+
 ---
-## Example Tailwind Extension
-You can extend Tailwind to use these variables:
-```js
-// tailwind.config.js
-module.exports = {
-theme: {
-extend: {
-colors: {
-background: 'var(--color-background)',
-foreground: 'var(--color-foreground)',
-accent: 'var(--color-accent)',
-// ...other variables
-},
-borderRadius: {
-md: 'var(--radius-md)',
-lg: 'var(--radius-lg)',
-},
-},
-},
-darkMode: 'class', // enable dark mode via class
-}
+
+## Structure
+
 ```
+WhaleArena/
+├── HTML               # Main HTML layout and structure
+├── CSS_WhaleArena     # Custom CSS variables, theming, typography, and animation utilities
+├── JS                 # Main app logic, cursor, navigation, background effects
+├── TSX_WhaleArena     # React/TypeScript SPA implementation (for advanced UI & animation)
+├── README.md          # You're reading it!
+```
+
 ---
+
+## Quick Start
+
+### Static Demo
+
+1. Clone the repo:
+    ```bash
+    git clone https://github.com/Crimson-rain-flower/WhaleArena.git
+    cd WhaleArena
+    ```
+
+2. Open the `HTML` file in your browser  
+   (Make sure the referenced CSS and JS files are available in your project folder.)
+
+### React/TSX Version
+
+1. Install dependencies (if using the React/TSX version):
+    ```bash
+    npm install
+    ```
+
+2. Run the development server:
+    ```bash
+    npm start
+    ```
+
+3. Open [http://localhost:3000](http://localhost:3000) to view in the browser.
+
+---
+
 ## Customization
-- Change values in `:root` for your default (light) theme.
-- Override in `.dark` for dark mode.
-- Add or modify custom properties for your design needs.
+
+- **Branding:**  
+  Change images, colors, and logos in the HTML/CSS files to match your institution or competition.
+
+- **Student Data:**  
+  The demo uses mock data for students. Integrate with your backend or database for real authentication and dynamic stats.
+
+- **Add New Pages:**  
+  Expand the navigation and add new components for features like leaderboards, resources, or announcements.
+
 ---
+
+## Keyboard Shortcuts
+
+- `Ctrl`/`Cmd` + `1`: Dashboard
+- `Ctrl`/`Cmd` + `2`: Progress
+- `Ctrl`/`Cmd` + `3`: Explore
+- `Ctrl`/`Cmd` + `4`: Profile
+- `Ctrl`/`Cmd` + `5`: Social
+- `Ctrl`/`Cmd` + `6`: Discover/Create
+- `Escape`: Go to Dashboard/Main (if logged in)
+
+---
+
+## Credits
+
+- **Design & Development:**  
+  Ananya and Sabina
+
+- **Images:**  
+  Unsplash (whale images), Google Fonts (Inter), Pinterest, Canva
+
+- **Animation:**  
+  Framer Motion, TailwindCSS, custom JS, Pinterest, Figma
+
+---
+
 ## License
-Feel free to use, modify, and distribute this CSS system in your projects.
+
+This project is for educational and demonstration purposes.  
+Feel free to fork, modify, or contribute!
+
 ---
-**Author:** Crimson-rain-flower
-*
-*
-L
-a
-s
-t
-U
-p
-d
-a
-t
-e
-d:*
-*
-2
-0
-2
-5
--
-0
-8
--
-0
-2
+
+## Contributions
+
+Pull requests and feedback are welcome!  
+If you build something cool with WhaleArena, let us know.
