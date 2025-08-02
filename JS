@@ -1,0 +1,381 @@
+let currentPage = 'login';
+let student = null;
+let cursorPos = { x: 0, y: 0 };
+let isMoving = false;
+let trailPositions = [];
+let ripples = [];
+const mockStudent = {
+    id: '1',
+    name: 'Sabina Nadar',
+    email: 'sabina.nadar@college.edu',
+    branch: 'Computer Science',
+    year: 'Final Year',
+    college: 'Thakur College of Engineering',
+    totalWebathons: 8,
+    currentTeam: 'Ocean Innovators'
+};
+document.addEventListener('DOMContentLoaded', function() {
+    initializeCursor();
+    initializeBackgroundEffects();
+    showPage('login');
+});
+function initializeCursor() {
+    const cursor = document.getElementById('cursor');
+    const cursorRing = document.getElementById('cursor-ring');
+    const cursorGlow = document.getElementById('cursor-glow');
+    const cursorDot = document.getElementById('cursor-dot');
+    const trailContainer = document.getElementById('cursor-trail');
+
+    let moveTimer;
+    document.addEventListener('mousemove', function(e) {
+        cursorPos = { x: e.clientX, y: e.clientY };
+        isMoving = true;
+        cursor.style.left = cursorPos.x + 'px';
+        cursor.style.top = cursorPos.y + 'px';
+        updateCursorTrail();
+       clearTimeout(moveTimer);
+        moveTimer = setTimeout(() => {
+            isMoving = false;
+        }, 100);
+    });
+    document.addEventListener('click', function(e) {
+        createRipple(e.clientX, e.clientY);
+    });
+}
+
+function updateCursorTrail() {
+    trailPositions.unshift({ ...cursorPos });
+    if (trailPositions.length > 9) {
+        trailPositions.pop();
+    }
+     const trailContainer = document.getElementById('cursor-trail');
+    trailContainer.innerHTML = '';
+    
+    trailPositions.forEach((pos, index) => {
+        if (index === 0) return; // Skip first position (current cursor)
+        
+        const dot = document.createElement('div');
+        dot.className = 'cursor-trail-dot';
+        
+        const size = Math.max(2, 8 - index);
+        const opacity = Math.max(0.1, 0.6 - index * 0.1);
+        
+        dot.style.width = size + 'px';
+        dot.style.height = size + 'px';
+        dot.style.left = (pos.x - size/2) + 'px';
+        dot.style.top = (pos.y - size/2) + 'px';
+        dot.style.background = `radial-gradient(circle, rgba(6, 182, 212, ${opacity}) 0%, transparent 70%)`;
+        
+        trailContainer.appendChild(dot);
+    });
+}function createRipple(x, y) {
+    const intensity = Math.random() * 0.5 + 0.5;
+    const rippleContainer = document.getElementById('ripples-container');
+    const rippleWrapper = document.createElement('div');
+    rippleWrapper.style.position = 'fixed';
+    rippleWrapper.style.left = (x - 100) + 'px';
+    rippleWrapper.style.top = (y - 100) + 'px';
+    rippleWrapper.style.pointerEvents = 'none';
+    rippleWrapper.style.zIndex = '30';
+    const primaryRipple = document.createElement('div');
+    primaryRipple.className = 'ripple ripple-primary';
+    primaryRipple.style.left = '80px';
+    primaryRipple.style.top = '80px';
+    const secondaryRipple = document.createElement('div');
+    secondaryRipple.className = 'ripple ripple-secondary';
+    secondaryRipple.style.left = '70px';
+    secondaryRipple.style.top = '70px';
+    const burst = document.createElement('div');
+    burst.className = 'ripple ripple-burst';
+    burst.style.left = '90px';
+    burst.style.top = '90px';
+    for (let i = 0; i < 6; i++) {
+        const particle = document.createElement('div');
+        particle.style.position = 'absolute';
+        particle.style.width = '4px';
+        particle.style.height = '4px';
+        particle.style.background = '#06b6d4';
+        particle.style.borderRadius = '50%';
+        particle.style.left = '98px';
+        particle.style.top = '98px';
+          const angle = (i / 6) * Math.PI * 2;
+        const distance = 60;
+        const targetX = Math.cos(angle) * distance;
+        const targetY = Math.sin(angle) * distance;
+        
+        particle.animate([
+            { transform: 'translate(0, 0) scale(0)', opacity: 1 },
+            { transform: `translate(${targetX}px, ${targetY}px) scale(1)`, opacity: 0.8 },
+            { transform: `translate(${targetX}px, ${targetY}px) scale(0)`, opacity: 0 }
+        ], {
+            duration: 1200,
+            delay: 100,
+            easing: 'ease-out'
+        });rippleWrapper.appendChild(particle);
+    }
+    
+    rippleWrapper.appendChild(primaryRipple);
+    rippleWrapper.appendChild(secondaryRipple);
+    rippleWrapper.appendChild(burst);
+    rippleContainer.appendChild(rippleWrapper);
+    setTimeout(() => {
+        rippleContainer.removeChild(rippleWrapper);
+    }, 2000);
+}
+function initializeBackgroundEffects() {
+    createFloatingParticles();
+}
+
+function createFloatingParticles() {
+    const container = document.getElementById('floating-particles');
+    
+    for (let i = 0; i < 15; i++) {
+        const particle = document.createElement('div');
+        particle.className = 'floating-particle';
+        
+        const size = 2 + (i % 3);
+        const opacity = 0.3 + (i % 3) * 0.1;
+        
+        particle.style.width = size + 'px';
+        particle.style.height = size + 'px';
+        particle.style.background = `radial-gradient(circle, rgba(6, 182, 212, ${opacity}) 0%, transparent 70%)`;
+        particle.style.left = (5 + i * 6) + '%';
+        particle.style.top = (20 + i * 5) + '%';
+        particle.style.animationDelay = (i * 1.5) + 's';
+        particle.style.animationDuration = (12 + i * 2) + 's';
+        
+        container.appendChild(particle);
+    }
+}
+function showPage(pageName) {
+    const pages = document.querySelectorAll('.page');
+    const navigation = document.getElementById('navigation');
+    pages.forEach(page => {
+        page.classList.remove('active', 'entering', 'exiting');
+        if (page.style.display !== 'none') {
+            page.classList.add('exiting');
+            setTimeout(() => {
+                page.style.display = 'none';
+                page.classList.remove('exiting');
+            }, 400);
+        }
+    });
+    setTimeout(() => {
+        const targetPage = document.getElementById(pageName + '-page');
+        if (targetPage) {
+            targetPage.style.display = 'block';
+            targetPage.classList.add('entering');
+            
+            setTimeout(() => {
+                targetPage.classList.remove('entering');
+                targetPage.classList.add('active');
+            }, 50);
+        }
+    }, 400);
+    if (pageName === 'login' || pageName === 'loading') {
+        navigation.classList.add('hidden');
+    } else {
+        navigation.classList.remove('hidden');
+        updateActiveMenuItem(pageName);
+    }
+    
+    currentPage = pageName;
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function updateActiveMenuItem(pageName) {
+    const menuItems = document.querySelectorAll('.menu-item');
+    menuItems.forEach(item => {
+        item.classList.remove('active');
+        if (item.dataset.page === pageName) {
+            item.classList.add('active');
+        }
+    });
+}
+function navigateTo(page) {
+    showPage(page);
+}
+
+function logout() {
+    student = null;
+    showPage('login');
+}
+function handleLogin(event) {
+    event.preventDefault();
+    
+    const username = document.getElementById('username').value;
+    const password = document.getElementById('password').value;
+    
+    if (username && password) {
+        student = mockStudent;
+        showPage('loading');
+        startLoadingSequence();
+    }
+}
+
+function startLoadingSequence() {
+    const progressBar = document.getElementById('progress-bar');
+    const progressText = document.getElementById('progress-text');
+    let progress = 0;
+    
+    const duration = 3000; // 3 seconds
+    const interval = 50;
+    const increment = 100 / (duration / interval);
+    
+    const timer = setInterval(() => {
+        progress += increment;
+        progress = Math.min(progress, 100);
+        
+        progressBar.style.width = progress + '%';
+        progressText.textContent = Math.round(progress) + '%';
+        
+        if (progress >= 100) {
+            clearInterval(timer);
+            setTimeout(() => {
+                showPage('main');
+            }, 500);
+        }
+    }, interval);
+}
+
+
+function addHoverEffects() {
+    const cards = document.querySelectorAll('.card');
+    cards.forEach(card => {
+        card.addEventListener('mouseenter', function() {
+            this.style.transform = 'translateY(-4px) scale(1.02)';
+        });
+        
+        card.addEventListener('mouseleave', function() {
+            this.style.transform = 'translateY(0) scale(1)';
+        });
+    });
+    
+    const buttons = document.querySelectorAll('.btn');
+    buttons.forEach(button => {
+        button.addEventListener('mouseenter', function() {
+            this.style.transform = 'translateY(-2px) scale(1.05)';
+        });
+        
+        button.addEventListener('mouseleave', function() {
+            this.style.transform = 'translateY(0) scale(1)';
+        });
+    });
+}
+
+
+document.addEventListener('DOMContentLoaded', function() {
+    setTimeout(addHoverEffects, 100);
+});
+
+
+document.addEventListener('DOMContentLoaded', function() {
+    const menuItems = document.querySelectorAll('.menu-item');
+    menuItems.forEach((item, index) => {
+        item.style.opacity = '0';
+        item.style.transform = 'translateY(20px)';
+        
+        setTimeout(() => {
+            item.style.transition = 'all 0.5s cubic-bezier(0.4, 0, 0.2, 1)';
+            item.style.opacity = '1';
+            item.style.transform = 'translateY(0)';
+        }, 600 + index * 100);
+    });
+});
+
+
+document.addEventListener('click', function(e) {
+    if (e.target.closest('[href^="#"]')) {
+        e.preventDefault();
+        const target = document.querySelector(e.target.closest('[href^="#"]').getAttribute('href'));
+        if (target) {
+            target.scrollIntoView({ behavior: 'smooth' });
+        }
+    }
+});
+
+
+document.addEventListener('keydown', function(e) {
+    if (e.ctrlKey || e.metaKey) {
+        switch(e.key) {
+            case '1':
+                e.preventDefault();
+                if (student) navigateTo('main');
+                break;
+            case '2':
+                e.preventDefault();
+                if (student) navigateTo('progress');
+                break;
+            case '3':
+                e.preventDefault();
+                if (student) navigateTo('explore');
+                break;
+            case '4':
+                e.preventDefault();
+                if (student) navigateTo('profile');
+                break;
+            case '5':
+                e.preventDefault();
+                if (student) navigateTo('social');
+                break;
+            case '6':
+                e.preventDefault();
+                if (student) navigateTo('discover');
+                break;
+        }
+    }
+    
+    if (e.key === 'Escape' && currentPage !== 'login') {
+        navigateTo('main');
+    }
+});
+
+
+let ticking = false;
+
+function updateCursorOptimized() {
+    if (!ticking) {
+        requestAnimationFrame(() => {
+            updateCursorTrail();
+            ticking = false;
+        });
+        ticking = true;
+    }
+}
+
+
+window.addEventListener('resize', function() {
+    // Recalculate positions if needed
+    trailPositions = [];
+});
+
+
+function preloadImages() {
+    const images = [
+        'https://images.unsplash.com/photo-1559827260-dc66d52bef19?w=1920&h=1080&fit=crop&crop=center',
+        'https://images.unsplash.com/photo-1559827260-dc66d52bef19?w=100&h=100&fit=crop&crop=center'
+    ];
+    
+    images.forEach(src => {
+        const img = new Image();
+        img.src = src;
+    });
+}
+
+
+document.addEventListener('DOMContentLoaded', preloadImages);
+
+
+window.addEventListener('error', function(e) {
+    console.error('Application error:', e.error);
+  
+});
+
+
+if ('serviceWorker' in navigator) {
+    window.addEventListener('load', function() {
+        
+    });
+}
+
+console.log('🐋 WhaleArena loaded successfully!');
