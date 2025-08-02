@@ -1,4 +1,4 @@
-# Advanced CSS Theme System
+# Dive into Whale Arena
 This repository contains an advanced CSS theme system built with custom properties, utility
 layers, and enhanced typography. It is designed for projects that require seamless light/dark
 mode support, high-quality text rendering, and a modern, maintainable design
